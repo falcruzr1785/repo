@@ -2,7 +2,7 @@ const express = require('express'); //es como el servidor de http
 const { dirname } = require('path');
 const app = express();//app es el servidor
 
-const puerto = 3000;
+const puerto = process.env.PORT || 3000;
 
 //motor de plantillas
 app.set('view engine', 'ejs');
