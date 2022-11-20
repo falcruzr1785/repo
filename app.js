@@ -1,23 +1,21 @@
-const express = require('express'); //es como el servidor de http
-const { dirname } = require('path');
-const app = express();//app es el servidor
+const express = require('express');
+const app = express();
 
-require('dotenv').config();
+require('dotenv').config()
 
-const puerto = process.env.PORT || 3000;///process.env.PORT es para que Heroku le asigne el puerto
+const puerto = process.env.PORT || 3000;
 
-///conexion a Base de Datos
+// Conexión a Base de datos
 const mongoose = require('mongoose');
 
-const uri= `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.xkyfv4a.mongodb.net/${process.env.NOMBREBD}?retryWrites=true&w=majority
-`;
 
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.xkyfv4a.mongodb.net/${process.env.NOMBREBD}?retryWrites=true&w=majority`;
 
 mongoose.connect(uri,
-    { useNewUrlParser: true, useUnifiedTopology: true  }
+    { useNewUrlParser: true, useUnifiedTopology: true }
 )
-    .then(() => console.log('Base de datos conectada'))  
-    .catch(e => console.log(e)) 
+    .then(() => console.log('Base de datos conectada'))
+    .catch(e => console.log(e))
 
 //motor de plantilla
 app.set('view engine', 'ejs');
