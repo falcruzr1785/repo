@@ -2,30 +2,39 @@ const express = require('express'); //es como el servidor de http
 const { dirname } = require('path');
 const app = express();//app es el servidor
 
-const puerto = process.env.PORT || 3000;
+require('dotenv').config();
 
-//motor de plantillas
+const puerto = process.env.PORT || 3000;///process.env.PORT es para que Heroku le asigne el puerto
+
+///conexion a Base de Datos
+const mongoose = require('mongoose');
+
+const uri= `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.xkyfv4a.mongodb.net/${process.env.NOMBREBD}?retryWrites=true&w=majority
+`;
+
+
+mongoose.connect(uri,
+    { useNewUrlParser: true, useUnifiedTopology: true  }
+)
+    .then(() => console.log('Base de datos conectada'))  
+    .catch(e => console.log(e)) 
+
+//motor de plantilla
 app.set('view engine', 'ejs');
-app.set('views',__dirname+'/views');//donde estna ubicadas las platillas
+app.set('views',__dirname+'/views');//ruta donde estan ubicadas las platillas
+
 
 
 
 
 app.use(express.static(__dirname + "/public"));
 
+//rutas web
+app.use('/',         require('./router/RutasWeb') );
 
+//rutas mascotas
+app.use('/mascotas', require('./router/Mascotas') );
 
-app.get('/', // envia lo que está en la raiz
-    (req, res) => {///se debe respetar el orden de los parametros req, res
-        res.render("index", {titulo : "mi titulo dinamico desde app"} );
-    }
-);
-
-app.get('/servicios', (req, res) => {
- res.render("servicios", {tituloServicios: "este es un mensaje dinamieco de servicios"});
-    }
-
-);
 
 
 
